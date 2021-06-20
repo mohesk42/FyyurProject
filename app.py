@@ -614,7 +614,7 @@ def shows():
   # displays list of shows at /shows
   # TODO: replace with real venues data.
   #       num_shows should be aggregated based on number of upcoming shows per venue.
-  shows = Show.query.all()
+  shows = Show.query.all() #Note: didn't use JOIN here because tables are connected to each others by relationship
   data=[]
   for s in shows:
     data.append({
