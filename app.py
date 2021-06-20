@@ -137,7 +137,7 @@ def venues():
   #   "venues": [{
   #     "id": 2,
   #     "name": "The Dueling Pianos Bar",
-  #     "num_upcoming_shows": 0,
+  #     "num_upcoming_shows": 0, check
   #   }]
   # }]
   return render_template('pages/venues.html', areas=data);
@@ -158,7 +158,7 @@ def search_venues():
   #   "data": [{
   #     "id": 2,
   #     "name": "The Dueling Pianos Bar",
-  #     "num_upcoming_shows": 0,
+  #     "num_upcoming_shows": 0, check
   #   }]
   # }
   return render_template('pages/search_venues.html', results=response, search_term=request.form.get('search_term', ''))
@@ -187,7 +187,7 @@ def show_venue(venue_id):
   #     "artist_image_link": "https://images.unsplash.com/photo-1549213783-8284d0336c4f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=80",
   #     "start_time": "2019-05-21T21:30:00.000Z"
   #   }],
-  #   "upcoming_shows": [],
+  #   "upcoming_shows": [], check
   #   "past_shows_count": 1,
   #   "upcoming_shows_count": 0,
   # }
@@ -309,7 +309,7 @@ def delete_venue(venue_id):
 
   # BONUS CHALLENGE: Implement a button to delete a Venue on a Venue Page, have it so that
   # clicking that button delete it from the db then redirect the user to the homepage
-  return render_template('pages/home.html') ########Link not woring!!
+  return render_template('pages/home.html') ########Link not woring!! check
 
 #  Artists
 #  ----------------------------------------------------------------
@@ -345,7 +345,7 @@ def search_artists():
   #   "data": [{
   #     "id": 4,
   #     "name": "Guns N Petals",
-  #     "num_upcoming_shows": 0,
+  #     "num_upcoming_shows": 0, check
   #   }]
   # }
   return render_template('pages/search_artists.html', results=response, search_term=request.form.get('search_term', ''))
@@ -373,7 +373,7 @@ def show_artist(artist_id):
   #     "venue_image_link": "https://images.unsplash.com/photo-1543900694-133f37abaaa5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60",
   #     "start_time": "2019-05-21T21:30:00.000Z"
   #   }],
-  #   "upcoming_shows": [],
+  #   "upcoming_shows": [], check
   #   "past_shows_count": 1,
   #   "upcoming_shows_count": 0,
   # }
