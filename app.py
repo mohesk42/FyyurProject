@@ -389,7 +389,40 @@ def search_artists():
 def show_artist(artist_id):
   # shows the artist page with the given artist_id
   # TODO: replace with real artist data from the artist table, using artist_id
-  data = Artist.query.get(artist_id)
+  artist = Artist.query.get(artist_id)
+  data = {
+    "id": artist.id,
+    "name": artist.name,
+    "genres": artist.genres,
+    "city": artist.city,
+    "state": artist.state,
+    "phone": artist.phone,
+    "website": artist.website,
+    "facebook_link": artist.facebook_link,
+    "seeking_venue": artist.seeking_venue,
+    "seeking_description": artist.seeking_description,
+    "image_link": artist.image_link
+  }
+  data['past_shows'] = []
+  data['upcoming_shows'] = []
+  for show in artist.shows:
+    if show.start_time < datetime.now():
+      data['past_shows'].append({
+        "venue_id": show.venue_id,
+        "venue_name": show.venue.name,
+        "venue_image_link": show.venue.image_link,
+        "start_time": str(show.start_time)
+      })
+    else:
+      data['upcoming_shows'].append({
+        "venue_id": show.venue_id,
+        "venue_name": show.venue.name,
+        "venue_image_link": show.venue.image_link,
+        "start_time": str(show.start_time)
+      })
+  
+  data['past_shows_count'] = len(data['past_shows'])
+  data['upcoming_shows_count'] = len(data['upcoming_shows'])
   # data1={
   #   "id": 4,
   #   "name": "Guns N Petals",
