@@ -134,16 +134,27 @@ def create_venue_submission():
   # TODO: insert form data as a new Venue record in the db, instead
   # TODO: modify data to be the data object returned from db insertion
   error = False
+  form = VenueForm(request.form)
   try:
-    if 'seeking_talent' in request.form:
-      seekingTalent = True
-    else:
-      seekingTalent = False
+    # if 'seeking_talent' in request.form:
+    #   seekingTalent = True
+    # else:
+    #   seekingTalent = False
 
-    venue = Venue(name=request.form['name'],city=request.form['city'],state=request.form['state'],
-    address=request.form['address'],phone=request.form['phone'],image_link=request.form['image_link'],
-    facebook_link=request.form['facebook_link'],website=request.form['website_link'],genres=request.form.getlist('genres'),
-    seeking_talent=seekingTalent,seeking_description=request.form['seeking_description'])
+    venue = Venue(
+      name=form.name.data,
+      city=form.city.data,
+      state=form.state.data,
+      address=form.address.data,
+      phone=form.phone.data,
+      image_link=form.image_link.data,
+      facebook_link=form.facebook_link.data,
+      website=form.website_link.data,
+      genres=form.genres.data,
+      seeking_talent=form.seeking_talent.data,
+      seeking_description=form.seeking_description.data
+    )
+
     db.session.add(venue)
     db.session.commit()
   except:
@@ -190,16 +201,7 @@ def delete_venue(venue_id):
 def artists():
   # TODO: replace with real data returned from querying the database
   data = Artist.query.all()
-  # data=[{
-  #   "id": 4,
-  #   "name": "Guns N Petals",
-  # }, {
-  #   "id": 5,
-  #   "name": "Matt Quevedo",
-  # }, {
-  #   "id": 6,
-  #   "name": "The Wild Sax Band",
-  # }]
+
   return render_template('pages/artists.html', artists=data)
 
 @app.route('/artists/search', methods=['POST'])
@@ -213,14 +215,7 @@ def search_artists():
     "count": len(data),
     "data": data
   }
-  # response={
-  #   "count": 1,
-  #   "data": [{
-  #     "id": 4,
-  #     "name": "Guns N Petals",
-  #     "num_upcoming_shows": 0, check
-  #   }]
-  # }
+
   return render_template('pages/search_artists.html', results=response, search_term=request.form.get('search_term', ''))
 
 @app.route('/artists/<int:artist_id>')
@@ -256,19 +251,6 @@ def show_artist(artist_id):
 @app.route('/artists/<int:artist_id>/edit', methods=['GET'])
 def edit_artist(artist_id):
   form = ArtistForm()
-  # artist={
-  #   "id": 4,
-  #   "name": "Guns N Petals",
-  #   "genres": ["Rock n Roll"],
-  #   "city": "San Francisco",
-  #   "state": "CA",
-  #   "phone": "326-123-5000",
-  #   "website": "https://www.gunsnpetalsband.com",
-  #   "facebook_link": "https://www.facebook.com/GunsNPetals",
-  #   "seeking_venue": True,
-  #   "seeking_description": "Looking for shows to perform at in the San Francisco Bay Area!",
-  #   "image_link": "https://images.unsplash.com/photo-1549213783-8284d0336c4f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=80"
-  # }
   # TODO: populate form with fields from artist with ID <artist_id>
   artist = Artist.query.get(artist_id)
   form.name.data = artist.name
