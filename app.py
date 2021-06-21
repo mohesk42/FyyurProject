@@ -21,6 +21,7 @@ import logging
 from logging import Formatter, FileHandler
 from flask_wtf import Form
 from sqlalchemy.sql.elements import Null
+from wtforms import form
 from forms import *
 from flask_migrate import Migrate
 from models import db, Venue, Artist, Show
@@ -136,11 +137,6 @@ def create_venue_submission():
   error = False
   form = VenueForm(request.form)
   try:
-    # if 'seeking_talent' in request.form:
-    #   seekingTalent = True
-    # else:
-    #   seekingTalent = False
-
     venue = Venue(
       name=form.name.data,
       city=form.city.data,
@@ -271,22 +267,19 @@ def edit_artist_submission(artist_id):
   # TODO: take values from the form submitted, and update existing
   # artist record with ID <artist_id> using the new attributes
   error = False
+  form = ArtistForm(request.form)
   try:
-    if 'seeking_venue' in request.form:
-      seekingVenue = True
-    else:
-      seekingVenue = False
-    artist = Artist.query.get(artist_id)
-    artist.name = request.form['name']
-    artist.genres = request.form.getlist('genres')
-    artist.city = request.form['city']
-    artist.state = request.form['state']
-    artist.phone = request.form['phone']
-    artist.website= request.form['website_link']
-    artist.facebook_link = request.form['facebook_link']
-    artist.seeking_venue = seekingVenue
-    artist.seeking_description = request.form['seeking_description']
-    artist.image_link = request.form['image_link']
+    artist = Venue.query.get(artist_id)
+    artist.name = form.name.data
+    artist.genres = form.genres.data
+    artist.city = form.city.data
+    artist.state = form.state.data
+    artist.phone = form.phone.data
+    artist.website= form.website_link.data
+    artist.facebook_link = form.facebook_link.data
+    artist.seeking_venue = form.seeking_venue.data
+    artist.seeking_description = form.seeking_description.data
+    artist.image_link = form.image_link.data
     db.session.commit()
   except:
     db.session.rollback()
@@ -303,20 +296,6 @@ def edit_artist_submission(artist_id):
 @app.route('/venues/<int:venue_id>/edit', methods=['GET'])
 def edit_venue(venue_id):
   form = VenueForm()
-  # venue={
-  #   "id": 1,
-  #   "name": "The Musical Hop",
-  #   "genres": ["Jazz", "Reggae", "Swing", "Classical", "Folk"],
-  #   "address": "1015 Folsom Street",
-  #   "city": "San Francisco",
-  #   "state": "CA",
-  #   "phone": "123-123-1234",
-  #   "website": "https://www.themusicalhop.com",
-  #   "facebook_link": "https://www.facebook.com/TheMusicalHop",
-  #   "seeking_talent": True,
-  #   "seeking_description": "We are on the lookout for a local artist to play every two weeks. Please call us.",
-  #   "image_link": "https://images.unsplash.com/photo-1543900694-133f37abaaa5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60"
-  # }
 
   # TODO: populate form with values from venue with ID <venue_id>
   venue = Venue.query.get(venue_id)
@@ -338,24 +317,21 @@ def edit_venue(venue_id):
 def edit_venue_submission(venue_id):
   # TODO: take values from the form submitted, and update existing
   # venue record with ID <venue_id> using the new attributes
+  form = VenueForm(request.form)
   error = False
   try:
-    if 'seeking_talent' in request.form:
-      seekingTalent = True
-    else:
-      seekingTalent = False
     venue = Venue.query.get(venue_id)
-    venue.name = request.form['name']
-    venue.genres = request.form.getlist('genres')
-    venue.address = request.form['address']
-    venue.city = request.form['city']
-    venue.state = request.form['state']
-    venue.phone = request.form['phone']
-    venue.website= request.form['website_link']
-    venue.facebook_link = request.form['facebook_link']
-    venue.seeking_talent = seekingTalent
-    venue.seeking_description = request.form['seeking_description']
-    venue.image_link = request.form['image_link']
+    venue.name = form.name.data
+    venue.genres = form.genres.data
+    venue.address = form.address.data
+    venue.city = form.city.data
+    venue.state = form.state.data
+    venue.phone = form.phone.data
+    venue.website= form.website_link.data
+    venue.facebook_link = form.facebook_link.data
+    venue.seeking_talent = form.seeking_talent.data
+    venue.seeking_description = form.seeking_description.data
+    venue.image_link = form.image_link.data
     db.session.commit()
   except:
     db.session.rollback()
@@ -383,16 +359,21 @@ def create_artist_submission():
   # TODO: insert form data as a new Venue record in the db, instead
   # TODO: modify data to be the data object returned from db insertion
   error = False
+  form = ArtistForm(request.form)
   try:
-    if 'seeking_venue' in request.form:
-      seekingVenue = True
-    else:
-      seekingVenue = False
-    
-    artist = Artist(name=request.form['name'],city=request.form['city'],state=request.form['state'],
-    phone=request.form['phone'],image_link=request.form['image_link'],
-    facebook_link=request.form['facebook_link'],website=request.form['website_link'],genres=request.form.getlist('genres'),
-    seeking_venue=seekingVenue,seeking_description=request.form['seeking_description'])
+    artist = Artist(
+      name=form.name.data,
+      city=form.city.data,
+      state=form.state.data,
+      phone=form.phone.data,
+      image_link=form.image_link.data,
+      facebook_link=form.facebook_link.data,
+      website=form.website_link.data,
+      genres=form.genres.data,
+      seeking_venue=form.seeking_venue.data,
+      seeking_description=form.seeking_description.data
+    )
+
     db.session.add(artist)
     db.session.commit()
   except:
